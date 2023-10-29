@@ -1,0 +1,27 @@
+# (c) Copyright IBM Corp. 2023
+# Apache License, Version 2.0 (see https://opensource.org/licenses/Apache-2.0)
+---
+- name: Create new initial CICS Catalogs
+
+  hosts: zos_host
+  gather_facts: false
+  environment: "{{ environment_vars }}"
+
+  tasks:
+    - name: Initialize a global catalog
+      ibm.ibm_zos_cics.global_catalog:
+        location: "HUGHEA.GSE.REGIONS.DFHGCD"
+        sdfhload: "CTS560.CICS730.SDFHLOAD"
+        space_primary: 100
+        space_type: "M"
+        state: "initial"
+
+    - name: Initialize a local catalog
+      ibm.ibm_zos_cics.local_catalog:
+        location: "HUGHEA.GSE.REGIONS.DFHLCD"
+        sdfhload: "CTS560.CICS730.SDFHLOAD"
+        space_primary: 50
+        space_type: "M"
+        state: "initial"
+
+# ansible-playbook -i /Users/andrewhughes/gseuk23/inventory.yml -e @/Users/andrewhughes/gseuk23/vars.yml ./create_catalogs.yml 
