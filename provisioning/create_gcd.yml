@@ -10,10 +10,10 @@
   tasks:
     - name: Initialize a global catalog
       ibm.ibm_zos_cics.global_catalog:
-        location: "HUGHEA.GSEUK.REGIONS.DFHGCD"
+        location: "HUGHEA.GSE.REGIONS.DFHGCD"
         sdfhload: "CTS560.CICS730.SDFHLOAD"
         space_primary: 100
         space_type: "M"
-        state: "initial"
+        state: "absent"
 
 # ansible-playbook -i /Users/andrewhughes/gseuk23/inventory.yml -e @/Users/andrewhughes/gseuk23/vars.yml ./create_gcd.yml 
