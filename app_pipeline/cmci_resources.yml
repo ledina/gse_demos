@@ -7,7 +7,7 @@
   environment: "{{ environment_vars }}"
   
   vars: 
-    program: "HELLO"
+    program: "{{ member_name }}"
     transaction: "HITR"
     csdgroup: "LHEGRP"
 
@@ -32,7 +32,7 @@
       ibm.ibm_zos_cics.cmci_action:
         type: "CICSDefinitionProgram"
         action_name: "INSTALL"
-        resource:
+        resources:
           filter:
             name: "{{ program }}"
 
@@ -50,7 +50,7 @@
       ibm.ibm_zos_cics.cmci_action:
         type: "CICSDefinitionTransaction"
         action_name: "INSTALL"
-        resource:
+        resources:
           filter:
             name: "{{ transaction }}"
 

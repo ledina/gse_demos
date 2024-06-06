@@ -9,7 +9,7 @@
   vars:
     src_member: "{{ src_data_set }}({{ member_name }})"
     exec_member: "{{ exec_data_set }}({{ member_name }})"
-    program: "HELLO"
+    program: "{{ member_name }}"
 
   module_defaults:
     group/ibm.ibm_zos_cics.cmci_group:
