@@ -28,14 +28,6 @@
         create_parameters:
           - name: "csd"
 
-    - name: Install the program 
-      ibm.ibm_zos_cics.cmci_action:
-        type: "CICSDefinitionProgram"
-        action_name: "INSTALL"
-        resources:
-          filter:
-            name: "{{ program }}"
-
     - name: Create the CICS transaction 
       ibm.ibm_zos_cics.cmci_create:
         type: "CICSDefinitionTransaction"
@@ -45,6 +37,14 @@
           program: "{{ program }}"
         create_parameters:
           - name: "csd"
+
+    - name: Install the program 
+      ibm.ibm_zos_cics.cmci_action:
+        type: "CICSDefinitionProgram"
+        action_name: "INSTALL"
+        resources:
+          filter:
+            name: "{{ program }}"
 
     - name: Install the transaction 
       ibm.ibm_zos_cics.cmci_action:
