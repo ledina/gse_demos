@@ -1,0 +1,58 @@
+# (c) Copyright IBM Corp. 2023
+# Apache License, Version 2.0 (see https://opensource.org/licenses/Apache-2.0)
+---
+- name: Create the program and transaction needed
+  hosts: all 
+  gather_facts: false
+  environment: "{{ environment_vars }}"
+  
+  vars: 
+    program: "HELLO"
+    transaction: "HITR"
+    csdgroup: "LHEGRP"
+
+  module_defaults:
+    group/ibm.ibm_zos_cics.cmci_group:
+      cmci_host: "{{ ansible_host }}"
+      cmci_port: "{{ cmci_port }}"
+      context: "{{ applid }}"
+      scheme: http
+
+  tasks:
+    - name: Create the CICS program 
+      ibm.ibm_zos_cics.cmci_create:
+        type: "CICSDefinitionProgram"
+        attributes:
+          name: "{{ program }}"
+          csdgroup: "{{ csdgroup }}"
+        create_parameters:
+          - name: "csd"
+
+    - name: Install the program 
+      ibm.ibm_zos_cics.cmci_action:
+        type: "CICSDefinitionProgram"
+        action_name: "INSTALL"
+        resource:
+          filter:
+            name: "{{ program }}"
+
+    - name: Create the CICS transaction 
+      ibm.ibm_zos_cics.cmci_create:
+        type: "CICSDefinitionTransaction"
+        attributes:
+          name: "{{ transaction }}"
+          csdgroup: "{{ csdgroup }}"
+          program: "{{ program }}"
+        create_parameters:
+          - name: "csd"
+
+    - name: Install the transaction 
+      ibm.ibm_zos_cics.cmci_action:
+        type: "CICSDefinitionTransaction"
+        action_name: "INSTALL"
+        resource:
+          filter:
+            name: "{{ transaction }}"
+
+
+

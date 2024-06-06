@@ -9,15 +9,15 @@
   vars:
     src_member: "{{ src_data_set }}({{ member_name }})"
     exec_member: "{{ exec_data_set }}({{ member_name }})"
+    program: "HELLO"
 
-   
   module_defaults:
     group/ibm.ibm_zos_cics.cmci_group:
       cmci_host: "{{ ansible_host }}"
       cmci_port: "{{ cmci_port }}"
       context: "{{ applid }}"
       scheme: http
-        
+
   tasks:
     - name: Create SRC data set for COBOL
       ibm.ibm_zos_core.zos_data_set:
@@ -60,45 +60,11 @@
       ansible.builtin.debug:
         msg: "{{ compile_job_ddnames | selectattr('ddname', 'equalto', 'JESMSGLG') }}"
 
-    - name: Create the CICS program 
-      ibm.ibm_zos_cics.cmci_create:
-        type: "CICSDefinitionProgram"
-        attributes:
-          name: "HELLO"
-          csdgroup: "LHEGRP"
-        create_parameters:
-          - name: "csd"
-
-    - name: Install the program 
+    - name: NEWCOPY the program in CICS
+      delegate_to: localhost
       ibm.ibm_zos_cics.cmci_action:
-        type: "CICSDefinitionProgram"
-        action_name: "INSTALL"
-        resource:
+        action_name: NEWCOPY
+        type: CICSProgram
+        resources:
           filter:
-            name: "HELLO"
-          get_parameters:
-            - name: "csdgroup"
-              value: "LHEGRP"
-
-    - name: Create the CICS transaction 
-      ibm.ibm_zos_cics.cmci_create:
-        type: "CICSDefinitionTransaction"
-        attributes:
-          name: "HITR"
-          csdgroup: "LHEGRP"
-          program: "HELLO"
-        create_parameters:
-          - name: "csd"
-
-    - name: Install the transaction 
-      ibm.ibm_zos_cics.cmci_action:
-        type: "CICSDefinitionTransaction"
-        action_name: "INSTALL"
-        resource:
-          filter:
-            name: "HITR"
-          get_parameters:
-            - name: "csdgroup"
-              value: "LHEGRP"
-
-
+            program: "{{ program }}"
