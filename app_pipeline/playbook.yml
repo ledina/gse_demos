@@ -2,7 +2,7 @@
 # Apache License, Version 2.0 (see https://opensource.org/licenses/Apache-2.0)
 ---
 - name: Compile COBOL application
-  hosts: zos_host
+  hosts: all 
   gather_facts: false
   environment: "{{ environment_vars }}"
 
@@ -55,5 +55,5 @@
     - name: Print compile job JES message log
       ansible.builtin.debug:
         msg: "{{ compile_job_ddnames | selectattr('ddname', 'equalto', 'JESMSGLG') }}"
-        
+
 # ansible-playbook -i /Users/andrewhughes/gseuk23/inventory.yml -e @/Users/andrewhughes/gseuk23/vars.yml ./playbook.yml
