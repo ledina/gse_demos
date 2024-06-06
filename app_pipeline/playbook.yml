@@ -62,6 +62,7 @@
     - name: Create the CICS program 
       ibm.ibm_zos_cics.cmci_create:
         type: "CICSDefinitionProgram"
+        scheme: http
         attributes:
           name: HELLO
           csdgroup: LHEGRP
@@ -71,6 +72,7 @@
     - name: Create the CICS transaction 
       ibm.ibm_zos_cics.cmci_create:
         type: "CICSDefinitionTransaction"
+        scheme: http
         attributes:
           name: HITR
           csdgroup: LHEGRP
