@@ -18,46 +18,46 @@
       context: "{{ applid }}"
         
   tasks:
-    - name: Create SRC data set for COBOL
-      ibm.ibm_zos_core.zos_data_set:
-        name: "{{ src_data_set }}"
-        type: pds
-        space_primary: 5
-        space_type: M
-        record_format: fba
-        record_length: 80
+    # - name: Create SRC data set for COBOL
+    #   ibm.ibm_zos_core.zos_data_set:
+    #     name: "{{ src_data_set }}"
+    #     type: pds
+    #     space_primary: 5
+    #     space_type: M
+    #     record_format: fba
+    #     record_length: 80
 
-    - name: Create EXEC data set for compiled COBOL
-      ibm.ibm_zos_core.zos_data_set:
-        name: "{{ exec_data_set }}"
-        type: pdse
-        space_primary: 5
-        space_type: M
-        record_format: U
+    # - name: Create EXEC data set for compiled COBOL
+    #   ibm.ibm_zos_core.zos_data_set:
+    #     name: "{{ exec_data_set }}"
+    #     type: pdse
+    #     space_primary: 5
+    #     space_type: M
+    #     record_format: U
     
-    - name: Copy local COBOL source to data set
-      ibm.ibm_zos_core.zos_copy:
-        src: "{{ playbook_dir }}/hello.cbl"
-        dest: "{{ src_member }}"
-        force: true
-        encoding:
-          from: ISO8859-1
-          to: IBM-1047
+    # - name: Copy local COBOL source to data set
+    #   ibm.ibm_zos_core.zos_copy:
+    #     src: "{{ playbook_dir }}/hello.cbl"
+    #     dest: "{{ src_member }}"
+    #     force: true
+    #     encoding:
+    #       from: ISO8859-1
+    #       to: IBM-1047
 
-    - name: Compile COBOL
-      ibm.ibm_zos_core.zos_job_submit:
-        src: "{{ playbook_dir }}/compile.j2"
-        location: LOCAL
-        use_template: true
-      register: compile_output
+    # - name: Compile COBOL
+    #   ibm.ibm_zos_core.zos_job_submit:
+    #     src: "{{ playbook_dir }}/compile.j2"
+    #     location: LOCAL
+    #     use_template: true
+    #   register: compile_output
     
-    - name: Extract ddnames from compile job
-      set_fact:
-        compile_job_ddnames: "{{ compile_output.jobs[0].ddnames }}"
+    # - name: Extract ddnames from compile job
+    #   set_fact:
+    #     compile_job_ddnames: "{{ compile_output.jobs[0].ddnames }}"
     
-    - name: Print compile job JES message log
-      ansible.builtin.debug:
-        msg: "{{ compile_job_ddnames | selectattr('ddname', 'equalto', 'JESMSGLG') }}"
+    # - name: Print compile job JES message log
+    #   ansible.builtin.debug:
+    #     msg: "{{ compile_job_ddnames | selectattr('ddname', 'equalto', 'JESMSGLG') }}"
 
     - name: Create the CICS program 
       ibm.ibm_zos_cics.cmci_create:
