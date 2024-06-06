@@ -41,7 +41,7 @@
     - name: Install the program 
       ibm.ibm_zos_cics.cmci_action:
         type: "CICSDefinitionProgram"
-        action_name: "INSTALL"
+        action_name: INSTALL
         resources:
           filter:
             name: "{{ program }}"
@@ -49,10 +49,12 @@
     - name: Install the transaction 
       ibm.ibm_zos_cics.cmci_action:
         type: "CICSDefinitionTransaction"
-        action_name: "INSTALL"
+        action_name: INSTALL
         resources:
           filter:
             name: "{{ transaction }}"
 
+#        type: CICSBundle
+#        resource:
 
 
