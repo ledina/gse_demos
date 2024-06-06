@@ -45,6 +45,8 @@
         resources:
           filter:
             name: "{{ program }}"
+            csdgroup: "{{ csdgroup }}"
+
 
     - name: Install the transaction 
       ibm.ibm_zos_cics.cmci_action:
@@ -53,6 +55,8 @@
         resources:
           filter:
             name: "{{ transaction }}"
+            csdgroup: "{{ csdgroup }}"
+
 
 #        type: CICSBundle
 #        resource:
