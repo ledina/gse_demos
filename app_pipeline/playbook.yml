@@ -7,12 +7,16 @@
   environment: "{{ environment_vars }}"
 
   vars:
-    member_name: HELLO
-    src_data_set: LEDINA.GSE.SRC
     src_member: "{{ src_data_set }}({{ member_name }})"
-    exec_data_set: LEDINA.GSE.EXEC
     exec_member: "{{ exec_data_set }}({{ member_name }})"
 
+   
+  module_defaults:
+    group/ibm.ibm_zos_cics.cmci_group:
+      cmci_host: "{{ ansible_host }}"
+      cmci_port: "{{ cmci_port }}"
+      context: "{{ applid }}"
+        
   tasks:
     - name: Create SRC data set for COBOL
       ibm.ibm_zos_core.zos_data_set:
@@ -40,7 +44,6 @@
           from: ISO8859-1
           to: IBM-1047
 
-
     - name: Compile COBOL
       ibm.ibm_zos_core.zos_job_submit:
         src: "{{ playbook_dir }}/compile.j2"
@@ -56,4 +59,22 @@
       ansible.builtin.debug:
         msg: "{{ compile_job_ddnames | selectattr('ddname', 'equalto', 'JESMSGLG') }}"
 
-# ansible-playbook -i /Users/andrewhughes/gseuk23/inventory.yml -e @/Users/andrewhughes/gseuk23/vars.yml ./playbook.yml
+    - name: Create the CICS program 
+      ibm.ibm_zos_cics.cmci_create:
+        type: "CICSDefinitionProgram"
+        attributes:
+          name: HELLO
+          csdgroup: LHEGRP
+        create_parameters:
+          - name: "csd"
+
+    - name: Create the CICS transaction 
+      ibm.ibm_zos_cics.cmci_create:
+        type: "CICSDefinitionTransaction"
+        attributes:
+          name: HITR
+          csdgroup: LHEGRP
+          program: HELLO
+        create_parameters:
+          - name: "csd"
+
