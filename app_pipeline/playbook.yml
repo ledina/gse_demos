@@ -1,16 +1,16 @@
 # (c) Copyright IBM Corp. 2023
 # Apache License, Version 2.0 (see https://opensource.org/licenses/Apache-2.0)
 ---
-- name: Compile and Run local COBOL application
+- name: Compile COBOL application
   hosts: zos_host
   gather_facts: false
   environment: "{{ environment_vars }}"
 
   vars:
     member_name: HELLO
-    src_data_set: HUGHEA.GSE.SRC
+    src_data_set: LEDINA.GSE.SRC
     src_member: "{{ src_data_set }}({{ member_name }})"
-    exec_data_set: HUGHEA.GSE.EXEC
+    exec_data_set: LEDINA.GSE.EXEC
     exec_member: "{{ exec_data_set }}({{ member_name }})"
 
   tasks:
@@ -55,21 +55,5 @@
     - name: Print compile job JES message log
       ansible.builtin.debug:
         msg: "{{ compile_job_ddnames | selectattr('ddname', 'equalto', 'JESMSGLG') }}"
-
-
-    - name: Run COBOL
-      ibm.ibm_zos_core.zos_job_submit:
-        src: "{{ playbook_dir }}/run.j2"
-        location: LOCAL
-        use_template: true
-      register: run_output
-    
-    - name: Extract ddnames from run job
-      set_fact:
-        run_job_ddnames: "{{ run_output.jobs[0].ddnames }}"
-    
-    - name: Print compile job JES message log
-      ansible.builtin.debug:
-        msg: "{{ run_job_ddnames | selectattr('ddname', 'equalto', 'SYSOUT') }}"
-
+        
 # ansible-playbook -i /Users/andrewhughes/gseuk23/inventory.yml -e @/Users/andrewhughes/gseuk23/vars.yml ./playbook.yml
