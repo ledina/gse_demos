@@ -64,17 +64,19 @@
         type: "CICSDefinitionProgram"
         scheme: http
         attributes:
-          name: HELLO
-          csdgroup: LHEGRP
+          name: "HELLO"
+          csdgroup: "LHEGRP"
+        create_parameters:
+          - name: "csd"
 
     - name: Create the CICS transaction 
       ibm.ibm_zos_cics.cmci_create:
         type: "CICSDefinitionTransaction"
         scheme: http
         attributes:
-          name: HITR
-          csdgroup: LHEGRP
-          program: HELLO
+          name: "HITR"
+          csdgroup: "LHEGRP"
+          program: "HELLO"
         create_parameters:
           - name: "csd"
 
