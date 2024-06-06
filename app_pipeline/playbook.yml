@@ -66,8 +66,6 @@
         attributes:
           name: HELLO
           csdgroup: LHEGRP
-        create_parameters:
-          - name: "csd"
 
     - name: Create the CICS transaction 
       ibm.ibm_zos_cics.cmci_create:
