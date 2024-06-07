@@ -3,7 +3,7 @@
         ENVIRONMENT DIVISION.
         DATA DIVISION.
         WORKING-STORAGE SECTION.
-        01 MSG  PIC X(18) VALUE "Hello GSE Nordic!".
+        01 MSG  PIC X(18) VALUE "Hello GSE UK!".
         LINKAGE SECTION.
         PROCEDURE DIVISION.
             DISPLAY "Hello".
