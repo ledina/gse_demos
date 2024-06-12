@@ -20,6 +20,7 @@
 
   tasks:
     - name: Create the CICS program 
+      delegate_to: localhost
       ibm.ibm_zos_cics.cmci_create:
         type: "CICSDefinitionProgram"
         attributes:
@@ -29,6 +30,7 @@
           - name: "csd"
 
     - name: Create the CICS transaction 
+      delegate_to: localhost
       ibm.ibm_zos_cics.cmci_create:
         type: "CICSDefinitionTransaction"
         attributes:
@@ -39,6 +41,7 @@
           - name: "csd"
 
     - name: Install the program 
+      delegate_to: localhost
       ibm.ibm_zos_cics.cmci_action:
         type: "CICSDefinitionProgram"
         action_name: CSDINSTALL
@@ -50,6 +53,7 @@
               value: "{{ csdgroup }}"
 
     - name: Install the transaction 
+      delegate_to: localhost
       ibm.ibm_zos_cics.cmci_action:
         type: "CICSDefinitionTransaction"
         action_name: CSDINSTALL
